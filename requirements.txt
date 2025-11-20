@@ -1,15 +1,3 @@
-python -m venv venv
-
-cd venv
-
-cd Scripts
-
-.\Activate.ps1
-
-cd ..
-
-pip install supabase
-
-pip install streamlit
-
-pip install python-dotenv
+supabase==2.6.0      
+streamlit==1.39.0  
+python-dotenv
