@@ -17,12 +17,23 @@ def sign_up(email, password):
     try:
         user = supabase.auth.sign_up({"email": email, "password": password})
 
-        # If email already exists, Supabase returns an object with no user.id
-        if not user or not user.user:
-            st.error("This email is already registered. Please log in instead.")
-            return None
+        # Supabase duplicate email detection
+        if hasattr(user, "user") and user.user is not None:
+            identities = user.user.identities
 
-        return user
+            if identities is not None and len(identities) == 0:
+                st.error("This email is already registered. Please log in instead.")
+                return None
+
+            return user
+
+        st.error("Registration failed. Please try again.")
+        return None
+
+    except Exception as e:
+        st.error(f"Registration failed: {e}")
+        return None
+
 
     except Exception as e:
         message = str(e).lower()
